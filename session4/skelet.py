@@ -10,7 +10,7 @@ class RankModel(torch.nn.Module):
         self.scoremodel = scoremodel
         self.margin = margin
 
-    def compute_loss(self, psim, nsim):     # TODO: implement dis
+    def compute_loss(self, psim, nsim):     # DONE: implemented this
         '''
         :param psim: the score between the question and the correct chain, shape = (batch_size,)
         :param nsim: the score between the question and the bad chain, shape = (batch_size,)
@@ -28,7 +28,7 @@ class RankModel(torch.nn.Module):
         return loss
 
 
-class ScoreModel(torch.nn.Module):                 # TODO: implement dis
+class ScoreModel(torch.nn.Module):                 # DONE: implemented this
     def __init__(self, qvocsize, qembdim, cvocsize, cembdim, encdim):
         super(ScoreModel, self).__init__()
         self.question_embedder = torch.nn.Embedding(qvocsize, qembdim)
