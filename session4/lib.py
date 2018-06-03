@@ -232,7 +232,7 @@ class StringMatrix():
         if not self._dictionary_external:
             sortedwordidxs = [self.d(x) for x in self.protectedwords] + \
                              ([self.d(x) for x, y
-                              in sorted(self._wordcounts_original.items(), key=lambda (x, y): y, reverse=True)
+                              in sorted(self._wordcounts_original.items(), key=lambda arg: arg[1], reverse=True)
                               if y >= self._rarefreq and x not in self.protectedwords][:self._topnwords])
             transdic = zip(sortedwordidxs, range(len(sortedwordidxs)))
             transdic = dict(transdic)
@@ -272,7 +272,7 @@ def iscuda(x):
         raise SumTingWongException("unsupported type")
 
 
-def load_jsons(datap="resources/denis_qald_combined.json",
+def load_jsons(datap="resources/qald_combined.json",
                relp="resources/nrels.json",
                mode="flat"):
     """ relp: file must contain dictionary mapping relation ids (ints) to lists of words (strings)"""
