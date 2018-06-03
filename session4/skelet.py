@@ -74,6 +74,7 @@ def run(lr=0.001,
         margin=1.,
         embdim=50,
         encdim=50,
+        validinter=5,
         ):
     print("loading data")
     qsm, csm, goldchainids, badchainids = load_jsons()
@@ -95,6 +96,8 @@ def run(lr=0.001,
     optimizer = torch.optim.Adam(score_model.parameters(), lr=lr)
 
     print(score_model)
+
+    validc = 0
 
     for i in range(epochs):
         print("Epoch {}".format(i))
@@ -123,9 +126,11 @@ def run(lr=0.001,
             loss.backward()
 
             optimizer.step()
-        print("Validating")
-        valid_numbers = test_model(score_model, validdata, qsm, csm, goldchainids, badchainids, "valid")
-        print("Recall@1: {:.3f} \t Recall@5: {:.3f} \t ({} examples)".format(valid_numbers[0], valid_numbers[1], len(validdata[0])))
+        if validc % validinter == 0:
+            print("Validating")
+            valid_numbers = test_model(score_model, validdata, qsm, csm, goldchainids, badchainids, "valid")
+            print("Recall@1: {:.3f} \t Recall@5: {:.3f} \t ({} examples)".format(valid_numbers[0], valid_numbers[1], len(validdata[0])))
+        validc += 1
     print("Testing")
     test_numbers = test_model(score_model, testdata, qsm, csm, goldchainids, badchainids, "test")
     print("Recall@1: {:.3f} \t Recall@5: {:.3f} \t ({} examples)".format(test_numbers[0], test_numbers[1], len(testdata[0])))
